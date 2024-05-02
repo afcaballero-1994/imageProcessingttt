@@ -32,9 +32,17 @@ float getPerceivedL(float luminance) {
   }
 }
 
-int main(void) {
-  const char *const filename = "";
-  const char *const output = "";
+int main(int argc, char **argv) {
+
+    if(argc > 4 || argc < 3){
+        fprintf(stderr, "Incorrect number of arguments\n");
+        exit(1);
+    }
+  const char *const filename = argv[1];
+  const char *const output = argv[2];
+  printf("%s\n", filename);
+    printf("%s\n", output);
+
   int x, y, n;
   unsigned char *data = stbi_load(filename, &x, &y, &n, 0);
   if (data == nullptr) {
