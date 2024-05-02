@@ -1,11 +1,9 @@
 #include "filters.h"
 #include "stb_image.h"
 
-inline u8 clamp(u8 value, u8 limit){
-    if(value > limit){
-        return limit;
-    } else if(value < 0){
-        return 0;
+f32 clamp(f32 value){
+    if(value > 255){
+        return 255;
     } else{
         return value;
     }
@@ -65,8 +63,8 @@ void processImageSepiaTone(u8 *data, u32 width, u32 height, u32 channels){
         f32 tg = (0.349f * (f32) r) + (0.686f * (f32) g) + (0.168f * (f32) b);
         f32 tb = (0.272f * (f32) r) + (0.534f * (f32) g) + (0.131f * (f32) b);
 
-        data[i    ] = clamp((u8)tr, 255);
-        data[i + 1] = clamp((u8)tg, 255);
-        data[i + 2] = clamp((u8)tb, 255);
+        data[i    ] = clamp(tr);
+        data[i + 1] = clamp(tg);
+        data[i + 2] = clamp(tb);
     }
 }

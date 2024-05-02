@@ -3,7 +3,7 @@
 #include "common.h"
 #include <math.h>
 
-u8 clamp(u8 value, u8 limit);
+f32 clamp(f32 value);
 static float sRGBtoLin(u8 color);
 static float getLuminance(u8 r, u8 g, u8 b);
 static float getPerceivedL(f32 luminance);
