@@ -10,8 +10,6 @@
 
 #include "stb_image_write.h"
 
-#include <math.h>
-
 int main(int argc, char **argv) {
 
     if (argc > 4 || argc < 3) {
@@ -29,8 +27,6 @@ int main(int argc, char **argv) {
         printf("could not load file\n");
         exit(2);
     }
-
-
 //    for (size_t i = 0; i < x; i++) {
 //        for (size_t j = 0; j < y; j++) {
 //            int r = data[n * (j * x + i)];
@@ -46,9 +42,9 @@ int main(int argc, char **argv) {
 //        }
 //    }
 
+    //processImagePerceivedLuminance(data, width, height, channels);
+    processImageSepiaTone(data, width, height, channels);
 
-
-    processImagePerceivedLuminance(data, width, height, channels);
     stbi_write_png(output, width, height, channels, data, channels * width);
 
     stbi_image_free(data);
