@@ -115,14 +115,14 @@ void printKernel(Matrix const *kernel){
     fprintf(stdout, "%f", sum);
 }
 
-void gaussianBlur(u8 *data,u32 width, u32 height, u32 channels ,u8 kernelSize, f32 sigma){
+void gaussianBlur(u8 *data,i64 width, i64 height, i64 channels ,u8 kernelSize, f32 sigma){
     Matrix kernel;
     generateGaussKernel(kernelSize, sigma, &kernel);
-    u8 center = roundf(kernelSize / 2.0f);
+    u8 center = kernelSize / 2.0f;
     u8 *temp = malloc(width * height * channels);
 
-    for(u32 i = 0; i < width; i++){
-        for(u32 j = 0; j < height; j++){
+    for(i64 i = 0; i < width; i++){
+        for(i64 j = 0; j < height; j++){
             f32 sumRed = 0;
             f32 sumGreen = 0;
             f32 sumBlue = 0;

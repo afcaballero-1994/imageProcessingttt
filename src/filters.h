@@ -19,6 +19,6 @@ static float getLuminance(u8 r, u8 g, u8 b);
 static float getPerceivedL(f32 luminance);
 void processImagePerceivedLuminance(u8 *data, u32 width, u32 height, u32 channels);
 void processImageSepiaTone(u8 *data, u32 width, u32 height, u32 channels);
-void gaussianBlur(u8 *data,u32 width, u32 height, u32 channels ,u8 kernelSize, f32 sigma);
+void gaussianBlur(u8 *data,i64 width, i64 height, i64 channels ,u8 kernelSize, f32 sigma);
 
 #endif //IMAGEPROCESSINGTEST_FILTERS_H

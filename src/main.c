@@ -27,14 +27,11 @@ int main(int argc, char **argv) {
         printf("could not load file\n");
         exit(2);
     }
-    Matrix gauss;
-    generateGaussKernel(5, 1.0f, &gauss);
-    printKernel(&gauss);
 
     //processImageSepiaTone(data, width, height, channels);
     //processImagePerceivedLuminance(data, width, height, channels);
 
-    gaussianBlur(data, width, height, channels, 15, 2.0f);
+    gaussianBlur(data, width, height, channels, 5, 2.0f);
 
     stbi_write_png(output, width, height, channels, data, channels * width);
 
