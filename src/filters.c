@@ -132,15 +132,15 @@ void gaussianBlur(u8 *data,i64 width, i64 height, i64 channels ,u8 kernelSize, f
                     i64 px = acpMod(i + (x - center), width);
                     i64 py = acpMod(j + (y - center), height);
 
-                    sumRed   += (f32) data[channels * (px * height + py)    ] * kernel.data[x * kernelSize + y];
-                    sumGreen += (f32) data[channels * (px * height + py) + 1] * kernel.data[x * kernelSize + y];
-                    sumBlue  += (f32) data[channels * (px * height + py) + 2] * kernel.data[x * kernelSize + y];
+                    sumRed   += (f32) data[channels * (py * width + px)    ] * kernel.data[x * kernelSize + y];
+                    sumGreen += (f32) data[channels * (py * width + px) + 1] * kernel.data[x * kernelSize + y];
+                    sumBlue  += (f32) data[channels * (py * width + px) + 2] * kernel.data[x * kernelSize + y];
                 }
             }
 
-            temp[channels * (i * height + j)    ] = sumRed;
-            temp[channels * (i * height + j) + 1] = sumGreen;
-            temp[channels * (i * height + j) + 2] = sumBlue;
+            temp[channels * (j * width + i)    ] = sumRed;
+            temp[channels * (j * width + i) + 1] = sumGreen;
+            temp[channels * (j * width + i) + 2] = sumBlue;
 
         }
     }

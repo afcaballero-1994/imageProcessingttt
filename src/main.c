@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     //processImageSepiaTone(data, width, height, channels);
     //processImagePerceivedLuminance(data, width, height, channels);
 
-    gaussianBlur(data, width, height, channels, 5, 2.0f);
+    gaussianBlur(data, width, height, channels, 31, 12.0f);
 
     stbi_write_png(output, width, height, channels, data, channels * width);
 
