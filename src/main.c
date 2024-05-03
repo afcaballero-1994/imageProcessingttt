@@ -30,26 +30,11 @@ int main(int argc, char **argv) {
     Matrix gauss;
     generateGaussKernel(5, 1.0f, &gauss);
     printKernel(&gauss);
-//    for (size_t i = 0; i < x; i++) {
-//        for (size_t j = 0; j < y; j++) {
-//            int r = data[n * (j * x + i)];
-//            int g = data[n * (j * x + i) + 1];
-//            int b = data[n * (j * x + i) + 2];
-//
-//            data[n * (j * x + i)] =
-//                    stbi__clamp(getPerceivedL(getLuminance(r, g, b)) * 2.55f);
-//            data[n * (j * x + i) + 1] =
-//                    stbi__clamp(getPerceivedL(getLuminance(r, g, b)) * 2.55f);
-//            data[n * (j * x + i) + 2] =
-//                    stbi__clamp(getPerceivedL(getLuminance(r, g, b)) * 2.55f);
-//        }
-//    }
-
 
     //processImageSepiaTone(data, width, height, channels);
     //processImagePerceivedLuminance(data, width, height, channels);
 
-    gaussianBlur(data, width, height, channels, 52, 1.0f);
+    gaussianBlur(data, width, height, channels, 15, 2.0f);
 
     stbi_write_png(output, width, height, channels, data, channels * width);
 

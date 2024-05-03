@@ -117,8 +117,8 @@ void printKernel(Matrix const *kernel){
 
 void gaussianBlur(u8 *data,u32 width, u32 height, u32 channels ,u8 kernelSize, f32 sigma){
     Matrix kernel;
-    generateGaussKernel(5, sigma, &kernel);
-    u8 center = kernelSize / 2;
+    generateGaussKernel(kernelSize, sigma, &kernel);
+    u8 center = roundf(kernelSize / 2.0f);
     u8 *temp = malloc(width * height * channels);
 
     for(u32 i = 0; i < width; i++){
@@ -132,15 +132,15 @@ void gaussianBlur(u8 *data,u32 width, u32 height, u32 channels ,u8 kernelSize, f
                     i64 px = acpMod(i + (x - center), width);
                     i64 py = acpMod(j + (y - center), height);
 
-                    sumRed   += (f32) data[channels * (px * height + py)] * kernel.data[x * kernelSize + y];
+                    sumRed   += (f32) data[channels * (px * height + py)    ] * kernel.data[x * kernelSize + y];
                     sumGreen += (f32) data[channels * (px * height + py) + 1] * kernel.data[x * kernelSize + y];
                     sumBlue  += (f32) data[channels * (px * height + py) + 2] * kernel.data[x * kernelSize + y];
                 }
             }
 
-            temp[channels * (i * height + j)    ] = clamp(sumRed);
-            temp[channels * (i * height + j) + 1] = clamp(sumGreen);
-            temp[channels * (i * height + j) + 2] = clamp(sumBlue);
+            temp[channels * (i * height + j)    ] = sumRed;
+            temp[channels * (i * height + j) + 1] = sumGreen;
+            temp[channels * (i * height + j) + 2] = sumBlue;
 
         }
     }
