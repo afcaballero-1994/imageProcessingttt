@@ -1,5 +1,16 @@
+#include <assert.h>
 #include "filters.h"
 #include "stb_image.h"
+#include <string.h>
+
+i64 acpMod(i64 a, i64 b){
+    i64 mod = a % b;
+    if(mod < 0){
+        return mod + b;
+    } else{
+        return mod;
+    }
+}
 
 f32 clamp(f32 value){
     if(value > 255){
@@ -67,4 +78,72 @@ void processImageSepiaTone(u8 *data, u32 width, u32 height, u32 channels){
         data[i + 1] = clamp(tg);
         data[i + 2] = clamp(tb);
     }
+}
+
+void generateGaussKernel(const u8 numColsRows, const f32 sigma ,Matrix *kernel){
+    assert(numColsRows < 32 && "Number of columns and rows cannot be larger than 32");
+    const f32 pi = atan2f(0.0f,-1.0f);
+    const f32 fraction = 1.0f / (2 * pi * sigma * sigma);
+    kernel->cols = numColsRows, kernel->rows = numColsRows;
+    f32 sum = 0;
+    for(u8 i = 0; i < numColsRows; i++){
+        for(u8 j = 0; j < numColsRows; j++){
+            f32 x = i - (numColsRows - 1) / 2.0;
+            f32 y = j - (numColsRows - 1) / 2.0;
+            f32 xtemp = -((x * x) + (y * y)) / (2 * sigma * sigma);
+            f32 ex = fraction * expf(xtemp);
+            kernel->data[i * numColsRows + j] = ex;
+            sum += kernel->data[i * numColsRows + j];
+        }
+    }
+    for(u8 i = 0; i < numColsRows; i++){
+        for(u8 j = 0; j < numColsRows; j++){
+            kernel->data[i * numColsRows + j] = kernel->data[i * numColsRows + j] / sum;
+        }
+    }
+}
+
+void printKernel(Matrix const *kernel){
+    f32 sum = 0.0f;
+    for(u8 i = 0; i < kernel->rows; i++){
+        for(u8 j = 0; j < kernel->cols; j++){
+            printf("%f ", kernel->data[i * kernel->cols + j]);
+            sum += kernel->data[i * kernel->cols + j];
+        }
+        printf("\n");
+    }
+    fprintf(stdout, "%f", sum);
+}
+
+void gaussianBlur(u8 *data,u32 width, u32 height, u32 channels ,u8 kernelSize, f32 sigma){
+    Matrix kernel;
+    generateGaussKernel(5, sigma, &kernel);
+    u8 center = kernelSize / 2;
+    u8 *temp = malloc(width * height * channels);
+
+    for(u32 i = 0; i < width; i++){
+        for(u32 j = 0; j < height; j++){
+            f32 sumRed = 0;
+            f32 sumGreen = 0;
+            f32 sumBlue = 0;
+
+            for(u8 x = 0; x < kernel.rows; x++){
+                for(u8 y = 0; y < kernel.cols; y++){
+                    i64 px = acpMod(i + (x - center), width);
+                    i64 py = acpMod(j + (y - center), height);
+
+                    sumRed   += (f32) data[channels * (px * height + py)] * kernel.data[x * kernelSize + y];
+                    sumGreen += (f32) data[channels * (px * height + py) + 1] * kernel.data[x * kernelSize + y];
+                    sumBlue  += (f32) data[channels * (px * height + py) + 2] * kernel.data[x * kernelSize + y];
+                }
+            }
+
+            temp[channels * (i * height + j)    ] = clamp(sumRed);
+            temp[channels * (i * height + j) + 1] = clamp(sumGreen);
+            temp[channels * (i * height + j) + 2] = clamp(sumBlue);
+
+        }
+    }
+    memcpy(data, temp, width * height * channels);
+    free(temp);
 }

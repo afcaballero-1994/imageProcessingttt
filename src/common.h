@@ -1,6 +1,7 @@
 #ifndef IMAGEPROCESSINGTEST_COMMON_H
 #define IMAGEPROCESSINGTEST_COMMON_H
 #include <stdint.h>
+#include <math.h>
 
 typedef uint8_t u8;
 typedef uint16_t u16;
